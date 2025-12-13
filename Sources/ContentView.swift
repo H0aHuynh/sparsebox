@@ -18,16 +18,16 @@ struct ContentView: View {
             Form {
                 Section {
                     HStack {
-                        Text("Heartbeat status")
+                        Text("Trậng thái Heartbeat")
                         Spacer()
-                        Text(heartbeatReady ? AttributedString("running", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("not started", attributes: .init([.foregroundColor: UIColor.systemRed])))
+                        Text(heartbeatReady ? AttributedString("Đang chạy", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("Chưa bắt đầu", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
                     HStack {
-                        Text("Developer Disk Image")
+                        Text("Hình ảnh đĩa của nhà phát triển")
                         Spacer()
-                        Text(ddiMounted ? AttributedString("mounted", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("not mounted", attributes: .init([.foregroundColor: UIColor.systemRed])))
+                        Text(ddiMounted ? AttributedString("đã phân vùng", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("chưa phân vùng", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
-                    Button(pairingFile == nil ? "Select pairing file" : "Reset pairing file") {
+                    Button(pairingFile == nil ? "Chọn tệp ghép nối" : "Đặt lại tệp ghép nối") {
                         if pairingFile == nil {
                             showPairingFileImporter.toggle()
                         } else {
@@ -38,7 +38,7 @@ struct ContentView: View {
                         guard let item = items.first else { return false }
                         pairingFile = String(decoding: item, as: UTF8.self)
                         guard pairingFile?.contains("DeviceCertificate") ?? false else {
-                            lastError = "The file you just dropped is not a pairing file"
+                            lastError = "Tệp bạn vừa thả không phải là tệp ghép nối"
                             showErrorAlert.toggle()
                             pairingFile = nil
                             return false
@@ -49,21 +49,21 @@ struct ContentView: View {
                     }
                 } footer: {
                     if pairingFile == nil {
-                        Text("Select or drag and drop a pairing file to continue. More info: https://docs.sidestore.io/docs/getting-started/pairing-file")
+                        Text("Chọn hoặc kéo và thả tệp ghép nối để tiếp tục. Thêm thông tin: https://docs.sidestore.io/docs/getting-started/pairing-file")
                     } else if !heartbeatReady {
-                        Text("Heartbeat is starting")
+                        Text("Đang bắt đầu Heartbeat")
                     } else if !ddiMounted {
                         HStack {
-                            Text("Developer Disk Image is not mounted. Please open StikDebug to mount it to continue.")
+                            Text("Hình ảnh đĩa dành cho nhà phát triển không được gắn kết. Vui lòng mở StikDebug để gắn nó để tiếp tục.")
                         }
                     } else {
-                        Text("Pairing file selected")
+                        Text("Đã chọn tệp ghép nối")
                     }
                 }
                 
                 if !ddiMounted {
                     Section {
-                        Button("Open StikDebug") {
+                        Button("Mở StikDebug") {
                             if let url = URL(string: "stikjit://") {
                                 UIApplication.shared.open(url)
                             }
@@ -72,22 +72,22 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    NavigationLink("List installed apps") {
+                    NavigationLink("Ứng dụng đã cài đặt") {
                         AppListView()
                     }
                     .disabled(!ddiMounted)
                 } header: {
-                    Text("Utilities")
+                    //Text("Utilities")
                 }
                 Section {
-                    NavigationLink("MobileGestalt tweaks") {
+                    NavigationLink("Tuỳ chỉnh MobileGestalist") {
                         MobileGestaltView()
                     }
                     .disabled(!ddiMounted)
                 } header: {
-                    Text("BookRestore exploit")
+                    //Text("BookRestore exploit")
                 }
-                Section {
+                /*Section {
                     let tempUnavailable = true
                     Button("Bypass 3 app limit") {
                         testBypassAppLimit()
@@ -101,11 +101,11 @@ struct ContentView: View {
                         "\nThis feature is currently unavailable when using idevice library." +
                         (Restore.supportedExploitLevel() == .dotAndSlashes ? "" : "\nYour iOS version (\(UIDevice.current.systemVersion)) does not support SparseRestore.")
                     )
-                }
-                Section {
+                }*/
+                /*Section {
                 } footer: {
                     VStack {
-                        Text("""
+                        /*Text("""
 A terrible app by @khanhduytran0. Use it at your own risk.
 Thanks to:
 @SideStore team: idevice, C bindings from StikDebug
@@ -114,9 +114,9 @@ Thanks to:
 @PoomSmart: MobileGestalt dump
 @Lakr233: BBackupp
 @libimobiledevice
-""")
+""")*/
                     }
-                }
+                }*/
             }
             .fileImporter(isPresented: $showPairingFileImporter, allowedContentTypes: [UTType(filenameExtension: "mobiledevicepairing", conformingTo: .data)!], onCompletion: { result in
                 switch result {
@@ -141,7 +141,7 @@ Thanks to:
                     Text("Unknown view: \(view)")
                 }
             }
-            .navigationTitle("SparseBox")
+            .navigationTitle("SaiGon Toolkit")
         }
         .onAppear {
             if initError != nil {
