@@ -56,8 +56,8 @@ struct MobileGestaltView: View {
                 Text("MobileGestalt")
             }
             Section {
-                Picker("Device model", selection:$productType) {
-                    Text("unchanged").tag(MobileGestaltView.machineName())
+                Picker("Mẫu thiết bị", selection:$productType) {
+                    Text("Không đổi").tag(MobileGestaltView.machineName())
                     if UIDevice.current.userInterfaceIdiom == .pad {
                         Text("iPad Pro 11 inch 5th Gen").tag("iPad16,3")
                     } else {
@@ -67,21 +67,21 @@ struct MobileGestaltView: View {
                 }
                 //.disabled(Utils.requiresVersion(18, 1))
             } header: {
-                Text("Device spoofing")
+                Text("Giả mạo thiết bị")
             } footer: {
-                Text("Only change device model if you're downloading Apple Intelligence models. Face ID may break.")
+                Text("Chỉ thay đổi kiểu thiết bị nếu bạn đang tải xuống các mẫu Apple Intelligence. Face ID có thể bị hỏng.")
             }
             Section {
                 let cacheExtra = mobileGestalt["CacheExtra"] as? NSMutableDictionary
-                Toggle("Become iPadOS", isOn: bindingForTrollPad())
+                Toggle("iPadOS cho iPhone", isOn: bindingForTrollPad())
                 // validate DeviceClass
                     .disabled(cacheExtra?["+3Uf0Pm5F8Xy7Onyvko0vA"] as? String != "iPhone")
             } footer: {
-                Text("Override user interface idiom to iPadOS, so you could use all iPadOS multitasking features on iPhone. Gives you the same capabilities as TrollPad, but may cause some issues.\nPLEASE DO NOT TURN OFF SHOW DOCK IN STAGE MANAGER OTHERWISE YOUR PHONE WILL BOOTLOOP WHEN ROTATING TO LANDSCAPE.")
+                Text("Ghi đè thành ngữ giao diện người dùng cho iPadOS, để bạn có thể sử dụng tất cả các tính năng đa nhiệm của iPadOS trên iPhone. Cung cấp cho bạn các khả năng tương tự như TrollPad, nhưng có thể gây ra một số vấn đề.\nVUI LÒNG KHÔNG TẮT SHOW DOCK TRONG STAGE MANAGER NẾU KHÔNG ĐIỆN THOẠI CỦA BẠN SẼ BOOTLOOP KHI XOAY ĐẾN LANDSCAPE.")
             }
             Section {
-                Toggle("Respring after finish restoring", isOn: $respring)
-                NavigationLink("Apply changes") {
+                Toggle("Respring Sau khi hoàn thành", isOn: $respring)
+                NavigationLink("Áp dụng thay đổi") {
                     LogView()
                         .onAppear {
                             saveProductType()
@@ -101,7 +101,7 @@ struct MobileGestaltView: View {
                         }
                 }
                 .disabled(taskRunning)
-                NavigationLink("Reset changes") {
+                NavigationLink("Đặt lại thay đổi") {
                     LogView()
                         .onAppear {
                             try! FileManager.default.removeItem(at: modMGURL)
@@ -125,7 +125,7 @@ struct MobileGestaltView: View {
             }
             Section {
                 //ShareLink("Export Modified MobileGestalt", item: modMGURL)
-                Button("Export Modified MobileGestalt", systemImage: "square.and.arrow.up") {
+                Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
                     saveProductType()
                     try! mobileGestalt.write(to: modMGURL)
                     let activityVC = UIActivityViewController(activityItems: [modMGURL], applicationActivities: nil)
@@ -133,15 +133,15 @@ struct MobileGestaltView: View {
                         scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
                     }
                 }
-                ShareLink("Export Original MobileGestalt", item: origMGURL)
+                ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
             }
             Section {
-                Button("Clear bookassetd UUID") {
+                Button("Xoá bookassetd UUID") {
                     bookassetdUUID = nil
                 }
                 .disabled(bookassetdUUID == nil)
             } footer: {
-                Text("For debugging only.")
+                //Text("For debugging only.")
             }
         }
         .alert("Error", isPresented: $showErrorAlert) {
@@ -150,11 +150,11 @@ struct MobileGestaltView: View {
             Text(lastError ?? "???")
         }
         .alert("Instruction", isPresented: $showBookassetdUUIDGuideAlert) {
-            Button("Got it") {
+            Button("Hiểu rồi") {
                 LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: "com.apple.iBooks")
             }
         } message: {
-            Text("SparseBox needs to get bookassetd UUID to continue. Please download a book from Apple Books app while this app is running, then come back here.")
+            Text("SaiGon Tookit cần nhận bookassetd UUID để tiếp tục. Vui lòng tải xuống một cuốn sách từ ứng dụng Apple Books trong khi ứng dụng này đang chạy, sau đó quay lại đây.")
         }
         .navigationTitle("MobileGestalt")
         .onAppear {
@@ -211,7 +211,7 @@ struct MobileGestaltView: View {
             _mobileGestalt = State(initialValue: try NSMutableDictionary(contentsOf: modMGURL, error: ()))
         } catch {
             _mobileGestalt = State(initialValue: [:])
-            _initError = State(initialValue: "Failed to copy MobileGestalt: \(error)")
+            _initError = State(initialValue: "Không sao chép được MobileGestalt: \(error)")
             taskRunning = true
         }
     }
