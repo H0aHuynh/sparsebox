@@ -21,8 +21,6 @@ struct MobileGestaltView: View {
 	
 	// Thêm State cho Dynamic Island Picker
 	@State private var selectedSubtypeIndex = 0
-	
-	@State private var selectedSubtypeIndex = 0
 
 // Danh sách subtype giống code Python của bạn
 private let islandSubtypes = [2436, 2556, 2796, 2976, 2622, 2868, 2736]
