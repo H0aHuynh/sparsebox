@@ -3,8 +3,6 @@ import UniformTypeIdentifiers
 
 struct MobileGestaltView: View {
 	let origMGURL, modMGURL, featFlagsURL: URL
-	let origResolutionURL, modResolutionURL: URL  // Thêm biến cho resolution plist
-	
 	@AppStorage("BookassetdContainerUUID") private var bookassetdUUID: String?
 	@Environment(\.scenePhase) var scenePhase
 	@State var mbdb: Backup?
@@ -29,7 +27,6 @@ private let islandSubtypes = [2736]
 
 // Tên hiển thị cho tùy chọn duy nhất (không cần array nữa)
 private let islandName = "iPhone Air"
- 
 	var body: some View {
 		Form {
 			Section {
@@ -155,16 +152,15 @@ private let islandName = "iPhone Air"
 			}
 			Section {
 				//ShareLink("Export Modified MobileGestalt", item: modMGURL)
-			Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
-                    saveProductType()
-                    try! mobileGestalt.write(to: modMGURL)
-                    let activityVC = UIActivityViewController(activityItems: [modMGURL], applicationActivities: nil)
-                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                        scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
-                    }
-                }
-    ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
-            }
+				Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
+					saveProductType()
+					try! mobileGestalt.write(to: modMGURL)
+					let activityVC = UIActivityViewController(activityItems: [modMGURL], applicationActivities: nil)
+					if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+						scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
+					}
+				}
+				ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
 			}
 			Section {
 				Button("Xoá bookassetd UUID") {
@@ -222,30 +218,30 @@ private let islandName = "iPhone Air"
 	}
 
 	init() {
-     let documentsDirectory = URL.documentsDirectory
-        featFlagsURL = documentsDirectory.appendingPathComponent("FeatureFlags.plist", conformingTo: .data)
-        origMGURL = documentsDirectory.appendingPathComponent("OriginalMobileGestalt.plist", conformingTo: .data)
-        modMGURL = documentsDirectory.appendingPathComponent("ModifiedMobileGestalt.plist", conformingTo: .data)
-        
-        do {
-            if !FileManager.default.fileExists(atPath: origMGURL.path) {
-                let url = URL(filePath: "/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist")
-                try FileManager.default.copyItem(at: url, to: origMGURL)
-            }
-            chmod(origMGURL.path, 0o644)
-            
-            if !FileManager.default.fileExists(atPath: modMGURL.path) {
-                try FileManager.default.copyItem(at: origMGURL, to: modMGURL)
-            }
-            chmod(modMGURL.path, 0o644)
-            
-            _mobileGestalt = State(initialValue: try NSMutableDictionary(contentsOf: modMGURL, error: ()))
-        } catch {
-            _mobileGestalt = State(initialValue: [:])
-            _initError = State(initialValue: "Failed to copy MobileGestalt: \(error)")
-            taskRunning = true
-        }
-    }
+		let documentsDirectory = URL.documentsDirectory
+		featFlagsURL = documentsDirectory.appendingPathComponent("FeatureFlags.plist", conformingTo: .data)
+		origMGURL = documentsDirectory.appendingPathComponent("OriginalMobileGestalt.plist", conformingTo: .data)
+		modMGURL = documentsDirectory.appendingPathComponent("ModifiedMobileGestalt.plist", conformingTo: .data)
+
+		do {
+			if !FileManager.default.fileExists(atPath: origMGURL.path) {
+				let url = URL(filePath: "/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist")
+				try FileManager.default.copyItem(at: url, to: origMGURL)
+			}
+			chmod(origMGURL.path, 0o644)
+
+			if !FileManager.default.fileExists(atPath: modMGURL.path) {
+				try FileManager.default.copyItem(at: origMGURL, to: modMGURL)
+			}
+			chmod(modMGURL.path, 0o644)
+
+			_mobileGestalt = State(initialValue: try NSMutableDictionary(contentsOf: modMGURL, error: ()))
+		} catch {
+			_mobileGestalt = State(initialValue: [:])
+			_initError = State(initialValue: "Không sao chép được MobileGestalt: \(error)")
+			taskRunning = true
+		}
+	}
 
 	func bindingForAppleIntelligence() -> Binding<Bool> {
 		guard let cacheExtra = mobileGestalt["CacheExtra"] as? NSMutableDictionary else {
