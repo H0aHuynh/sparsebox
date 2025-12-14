@@ -239,7 +239,7 @@ struct ContentView: View {
                     //Text("Utilities")
                 }
                 Section {
-                    NavigationLink("Tuỳ chỉnh MobileGestalist") {
+                    NavigationLink("Tuỳ chỉnh MobileGestalt") {
                         MobileGestaltView()
                     }
                     .disabled(!ddiMounted)
