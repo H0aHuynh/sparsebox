@@ -29,11 +29,11 @@ private let islandSubtypes = [2436, 2556, 2796, 2976, 2622, 2868, 2736]
 
 // Mô tả tên dễ hiểu cho từng subtype (hiển thị trong Picker)
 private let islandSubtypeNames = [
-    "2436: iPhone X gestures (old UI, no real DI)",
-    "2556: iPhone 14 Pro style (standard size)",
+    "2436: Cử chỉ iPhone X",
+    "2556: iPhone 14 Pro",
     "2796: iPhone 14 Pro Max",
     "2976: iPhone 15 Pro",
-    "2622: iOS 16",
+    "2622: iPhone 15 Pro Max",
     "2868: iPhone 16 Pro",
     "2736: iPhone Air"
 ]
@@ -69,12 +69,17 @@ private let islandSubtypeNames = [
                     "ArtworkDeviceSubType",
                     islandSubtypes,
                     $selectedSubtypeIndex
-                ).Picker("Kiểu Dynamic Island", selection: $selectedSubtypeIndex) {
-        ForEach(0..<islandSubtypes.count, id: \.self) { i in
-            Text(islandSubtypeNames[i]).tag(i)
+                ).wrappedValue {
+    Section {
+        Picker("Kiểu Dynamic Island", selection: $selectedSubtypeIndex) {
+            ForEach(0..<islandSubtypes.count, id: \.self) { i in
+                Text(islandSubtypeNames[i]).tag(i)
+            }
         }
+        .pickerStyle(.wheel)
+    } footer: {
+        Text("Khuyến nghị: Chọn iPhone Air để có vị trí thấp nhất, ít che notch hơn.")
     }
-    
 }
 				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
 				Toggle("Internal Storage info", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
