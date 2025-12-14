@@ -47,8 +47,7 @@ struct MobileGestaltView: View {
 				Toggle("Charge limit", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
 					.disabled(Utils.requiresVersion(17))
 				Toggle("Crash Detection (might not work)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
-				Toggle("Dynamic Island (17.4+, might not work)", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng","ArtworkDeviceSubType",islandSubtypes,
-                    selectedIndex: $selectedSubtypeIndex
+				Toggle("Dynamic Island (17.4+, might not work)", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex
                 ))
 
                 // Hiển thị Picker khi bật Dynamic Island
