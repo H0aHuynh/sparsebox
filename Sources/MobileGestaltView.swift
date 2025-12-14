@@ -241,8 +241,8 @@ private let islandName = "iPhone Air"
         modMGURL = documentsDirectory.appendingPathComponent("ModifiedMobileGestalt.plist", conformingTo: .data)
         
         // Thêm cho IOMobileGraphicsFamily.plist
-        _origResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("OriginalIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
-        _modResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("ModifiedIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
+        origResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("OriginalIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
+        modResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("ModifiedIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
 
         do {
             // Xử lý MobileGestalt
