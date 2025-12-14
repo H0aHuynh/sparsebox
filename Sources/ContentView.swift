@@ -182,9 +182,9 @@ struct ContentView: View {
                         Text(heartbeatReady ? AttributedString("Đang chạy", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("Chưa bắt đầu", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
                     HStack {
-                        Text("Hình ảnh đĩa của nhà phát triển")
+                        Text("Nhà phát triển")
                         Spacer()
-                        Text(ddiMounted ? AttributedString("đã phân vùng", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("chưa phân vùng", attributes: .init([.foregroundColor: UIColor.systemRed])))
+                        Text(ddiMounted ? AttributedString("đã có", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("chưa có", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
                     Button(pairingFile == nil ? "Chọn tệp ghép nối" : "Đặt lại tệp ghép nối") {
                         if pairingFile == nil {
@@ -246,7 +246,7 @@ struct ContentView: View {
                 } header: {
                     //Text("BookRestore exploit")
                 }
-                Section {
+
                 ZStack(alignment: .bottom) {
                     HStack {
                         ZStack {
@@ -259,7 +259,7 @@ struct ContentView: View {
                     }
                     
                     .onAppear(perform: {
-                        print("[+] SaiGon          : V\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "")")
+                        print("[+] SaiGon Toolkit          : V\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "")")
                         print("[+] Thiết bị        : \(modelName) ")
                         print("[+] iOS             : \(UIDevice.current.systemVersion)")
                         //description
@@ -272,9 +272,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 Spacer()
-            }header: {
-                    //Text("Utilities")
-                }
+
                 
                 /*Section {
                     let tempUnavailable = true
