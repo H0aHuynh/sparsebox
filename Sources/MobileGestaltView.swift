@@ -29,11 +29,7 @@ private let islandSubtypes = [2736]
 
 // Tên hiển thị cho tùy chọn duy nhất (không cần array nữa)
 private let islandName = "iPhone Air"
-
- @State private var fixRDARStatusBar = false
-
-    // File resolution cho RDAR fix (giống Nugget v7)
- private var resolutionURL: URL { modResolutionURL }  // Dùng modified để ghi/đọc
+ 
 	var body: some View {
 		Form {
 			Section {
@@ -159,27 +155,30 @@ private let islandName = "iPhone Air"
 			}
 			Section {
 				//ShareLink("Export Modified MobileGestalt", item: modMGURL)
-				Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
-					saveProductType()
-					try! mobileGestalt.write(to: modMGURL)
-					let activityVC = UIActivityViewController(activityItems: [modMGURL], applicationActivities: nil)
-					if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-						scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
-					}
-				}
-				// THÊM MỚI: Export Modified IOMobileGraphicsFamily.plist
+			Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
+                    saveProductType()
+                    try! mobileGestalt.write(to: modMGURL)
+                    let activityVC = UIActivityViewController(activityItems: [modMGURL], applicationActivities: nil)
+                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                        scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
+                    }
+                }
+                
+                // THÊM MỚI: Export Modified IOMobileGraphicsFamily.plist
                 Button("Xuất bản IOMobileGraphicsFamily.plist (RDAR Fix)", systemImage: "square.and.arrow.up") {
                     // Đảm bảo file đã được ghi mới nhất (nếu fix đang bật)
-                    
+                    //if fixRDARStatusBar {
+                        //applyRDARFix(enabled: true)
+                   // }
                     let activityVC = UIActivityViewController(activityItems: [modResolutionURL], applicationActivities: nil)
                     if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                         scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
                     }
                 }
-                .disabled(!FileManager.default.fileExists(atPath: modResolutionURL.path) || !fixRDARStatusBar)  // Chỉ bật khi có fix
-				
-				ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
-			}
+               // .disabled(!FileManager.default.fileExists(atPath: modResolutionURL.path) || !fixRDARStatusBar)  // Chỉ bật khi có fix
+                
+                ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
+            }
 			Section {
 				Button("Xoá bookassetd UUID") {
 					bookassetdUUID = nil
