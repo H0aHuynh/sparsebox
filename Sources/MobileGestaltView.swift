@@ -178,7 +178,9 @@ private let islandName = "iPhone Air"
                // .disabled(!FileManager.default.fileExists(atPath: modResolutionURL.path) || !fixRDARStatusBar)  // Chỉ bật khi có fix
                 
                 ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
-            }
+            }footer: {
+				//Text("For debugging only.")
+			}
 			Section {
 				Button("Xoá bookassetd UUID") {
 					bookassetdUUID = nil
@@ -235,51 +237,27 @@ private let islandName = "iPhone Air"
 	}
 
 	init() {
-        let documentsDirectory = URL.documentsDirectory
+     let documentsDirectory = URL.documentsDirectory
         featFlagsURL = documentsDirectory.appendingPathComponent("FeatureFlags.plist", conformingTo: .data)
         origMGURL = documentsDirectory.appendingPathComponent("OriginalMobileGestalt.plist", conformingTo: .data)
         modMGURL = documentsDirectory.appendingPathComponent("ModifiedMobileGestalt.plist", conformingTo: .data)
         
-        // Thêm cho IOMobileGraphicsFamily.plist
-        origResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("OriginalIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
-        modResolutionURL = State(initialValue: documentsDirectory.appendingPathComponent("ModifiedIOMobileGraphicsFamily.plist", conformingTo: .propertyList))
-
         do {
-            // Xử lý MobileGestalt
             if !FileManager.default.fileExists(atPath: origMGURL.path) {
                 let url = URL(filePath: "/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist")
                 try FileManager.default.copyItem(at: url, to: origMGURL)
             }
             chmod(origMGURL.path, 0o644)
-
+            
             if !FileManager.default.fileExists(atPath: modMGURL.path) {
                 try FileManager.default.copyItem(at: origMGURL, to: modMGURL)
             }
             chmod(modMGURL.path, 0o644)
-
-            // Xử lý IOMobileGraphicsFamily.plist
-            let deviceResolutionPath = "/var/mobile/Library/Preferences/com.apple.iokit.IOMobileGraphicsFamily.plist"
             
-            if !FileManager.default.fileExists(atPath: origResolutionURL.path) {
-                if FileManager.default.fileExists(atPath: deviceResolutionPath) {
-                    try FileManager.default.copyItem(atPath: deviceResolutionPath, toPath: origResolutionURL.path)
-                } else {
-                    // Tạo empty plist nếu chưa tồn tại trên thiết bị
-                    let emptyDict = NSMutableDictionary()
-                    emptyDict.write(to: origResolutionURL, atomically: true)
-                }
-            }
-            chmod(origResolutionURL.path, 0o644)
-            
-            if !FileManager.default.fileExists(atPath: modResolutionURL.path) {
-                try FileManager.default.copyItem(at: origResolutionURL, to: modResolutionURL)
-            }
-            chmod(modResolutionURL.path, 0o644)
-
             _mobileGestalt = State(initialValue: try NSMutableDictionary(contentsOf: modMGURL, error: ()))
         } catch {
             _mobileGestalt = State(initialValue: [:])
-            _initError = State(initialValue: "Không sao chép được file: \(error)")
+            _initError = State(initialValue: "Failed to copy MobileGestalt: \(error)")
             taskRunning = true
         }
     }
