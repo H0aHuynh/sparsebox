@@ -243,15 +243,27 @@ struct ContentView: View {
                         MobileGestaltView()
                     }
                     .disabled(!ddiMounted)
+                    
+                    let tempUnavailable = true
+                    Button("Bỏ qua giới hạn 3 ứng dụng (sắp có)") {
+                        testBypassAppLimit()
+                    }
+                    .disabled(tempUnavailable || Restore.supportedExploitLevel() != .dotAndSlashes || !heartbeatReady || taskRunning)
                 } header: {
                     //Text("BookRestore exploit")
+                }footer: {
+                    Text(
+                        "Ẩn các ứng dụng dành cho nhà phát triển miễn phí khỏi cài đặt, để bạn có thể cài đặt nhiều hơn 3 ứng dụng. Bạn cần áp dụng điều này cho mỗi 3 ứng dụng bạn cài đặt hoặc cập nhật." +
+                        "\nTính năng này hiện không khả dụng khi sử dụng thư viện idevice." +
+                        (Restore.supportedExploitLevel() == .dotAndSlashes ? "" : "\nPhiên bản iOS của bạn (\(UIDevice.current.systemVersion)) sắp được hộ trợ")
+                    )
                 }
 
 
                 
                 /*Section {
                     let tempUnavailable = true
-                    Button("Bypass 3 app limit") {
+                    Button("Bỏ qua giới hạn 3 ứng dụng (sắp có)") {
                         testBypassAppLimit()
                     }
                     .disabled(tempUnavailable || Restore.supportedExploitLevel() != .dotAndSlashes || !heartbeatReady || taskRunning)
