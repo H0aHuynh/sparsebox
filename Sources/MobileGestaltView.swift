@@ -23,19 +23,10 @@ struct MobileGestaltView: View {
 	@State private var selectedSubtypeIndex = 0
 
 // Danh sách subtype giống code Python của bạn
-private let islandSubtypes = [2436, 2556, 2796, 2976, 2622, 2868, 2736]
+private let islandSubtypes = [2736]
 
-// Mô tả tên dễ hiểu cho từng subtype (hiển thị trong Picker)
-private let islandSubtypeNames = [
-    "2436: Cử chỉ iPhone X",
-    "2556: iPhone 14 Pro",
-    "2796: iPhone 14 Pro Max",
-    "2976: iPhone 15 Pro",
-    "2622: iPhone 15 Pro Max",
-    "2868: iPhone 16 Pro",
-    "2736: iPhone Air"
-]
-	
+// Tên hiển thị cho tùy chọn duy nhất (không cần array nữa)
+private let islandName = "iPhone Air"
 	var body: some View {
 		Form {
 			Section {
@@ -58,7 +49,7 @@ private let islandSubtypeNames = [
 				Toggle("Charge limit", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
 					.disabled(Utils.requiresVersion(17))
 				Toggle("Crash Detection (might not work)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
-				Toggle("Dynamic Island (17.4+, might not work)", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex
+				Toggle("Dynamic Island", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex
                 ))
 
                 // Hiển thị Picker khi bật Dynamic Island
@@ -69,14 +60,11 @@ private let islandSubtypeNames = [
                     $selectedSubtypeIndex
                 ).wrappedValue {
     Section {
-        Picker("Kiểu Dynamic Island", selection: $selectedSubtypeIndex) {
-            ForEach(0..<islandSubtypes.count, id: \.self) { i in
-                Text(islandSubtypeNames[i]).tag(i)
-            }
-        }
-        .pickerStyle(.wheel)
+        Text(islandName)
+            .font(.headline)
+            .foregroundColor(.blue)
     } footer: {
-        Text("Khuyến nghị: Chọn iPhone Air để có vị trí thấp nhất, ít che notch hơn.")
+        Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
     }
 }
 				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
