@@ -22,8 +22,21 @@ struct MobileGestaltView: View {
 	// Thêm State cho Dynamic Island Picker
 	@State private var selectedSubtypeIndex = 0
 	
-	// Danh sách subtype giống hệt code Python của bạn
-	private let islandSubtypes = [2736]
+	@State private var selectedSubtypeIndex = 0
+
+// Danh sách subtype giống code Python của bạn
+private let islandSubtypes = [2436, 2556, 2796, 2976, 2622, 2868, 2736]
+
+// Mô tả tên dễ hiểu cho từng subtype (hiển thị trong Picker)
+private let islandSubtypeNames = [
+    "2436: iPhone X gestures (old UI, no real DI)",
+    "2556: iPhone 14 Pro style (standard size)",
+    "2796: iPhone 14 Pro Max",
+    "2976: iPhone 15 Pro",
+    "2622: iOS 16",
+    "2868: iPhone 16 Pro",
+    "2736: iPhone Air"
+]
 	
 	var body: some View {
 		Form {
@@ -56,14 +69,13 @@ struct MobileGestaltView: View {
                     "ArtworkDeviceSubType",
                     islandSubtypes,
                     $selectedSubtypeIndex
-                ).wrappedValue {
-                    Picker("ArtworkDeviceSubType", selection: $selectedSubtypeIndex) {
-                        ForEach(0..<islandSubtypes.count, id: \.self) { i in
-                            Text("\(islandSubtypes[i])").tag(i)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                }
+                ).Picker("Kiểu Dynamic Island", selection: $selectedSubtypeIndex) {
+        ForEach(0..<islandSubtypes.count, id: \.self) { i in
+            Text(islandSubtypeNames[i]).tag(i)
+        }
+    }
+    
+}
 				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
 				Toggle("Internal Storage info", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
 				Toggle("Internal stuff", isOn: bindingForInternalStuff())
