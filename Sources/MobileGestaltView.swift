@@ -33,7 +33,7 @@ private let islandName = "iPhone Air"
  @State private var fixRDARStatusBar = false
 
     // File resolution cho RDAR fix (giống Nugget v7)
-    private var resolutionURL: URL { modResolutionURL }  // Dùng modified để ghi/đọc
+ private var resolutionURL: URL { modResolutionURL }  // Dùng modified để ghi/đọc
 	var body: some View {
 		Form {
 			Section {
@@ -236,7 +236,6 @@ private let islandName = "iPhone Air"
 	}
 
 	init() {
-		init() {
         let documentsDirectory = URL.documentsDirectory
         featFlagsURL = documentsDirectory.appendingPathComponent("FeatureFlags.plist", conformingTo: .data)
         origMGURL = documentsDirectory.appendingPathComponent("OriginalMobileGestalt.plist", conformingTo: .data)
