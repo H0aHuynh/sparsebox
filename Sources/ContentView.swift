@@ -247,31 +247,6 @@ struct ContentView: View {
                     //Text("BookRestore exploit")
                 }
 
-                ZStack(alignment: .bottom) {
-                    HStack {
-                        ZStack {
-                            LogView()
-                                .padding(10)
-                                .frame(width: 350, height: 140)
-                                .background(.ultraThinMaterial)
-                                .cornerRadius(12)
-                        }
-                    }
-                    
-                    .onAppear(perform: {
-                        print("[+] SaiGon Toolkit          : V\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "")")
-                        print("[+] Thiết bị        : \(modelName) ")
-                        print("[+] iOS             : \(UIDevice.current.systemVersion)")
-                        //description
-                      //  print("[+] Chipset         : \(device.cpu.description)")
-                        //getKernelVersion()
-                        print("[+] Phiên bản Kernel: \(getKernelVersion() ?? "Không xác định")")
-                        
-                    })
-                    
-                }
-                Spacer()
-                Spacer()
 
                 
                 /*Section {
