@@ -163,23 +163,8 @@ private let islandName = "iPhone Air"
                         scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
                     }
                 }
-                
-                // THÊM MỚI: Export Modified IOMobileGraphicsFamily.plist
-                Button("Xuất bản IOMobileGraphicsFamily.plist (RDAR Fix)", systemImage: "square.and.arrow.up") {
-                    // Đảm bảo file đã được ghi mới nhất (nếu fix đang bật)
-                    //if fixRDARStatusBar {
-                        //applyRDARFix(enabled: true)
-                   // }
-                    let activityVC = UIActivityViewController(activityItems: [modResolutionURL], applicationActivities: nil)
-                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                        scene.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
-                    }
-                }
-               // .disabled(!FileManager.default.fileExists(atPath: modResolutionURL.path) || !fixRDARStatusBar)  // Chỉ bật khi có fix
-                
-                ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
-            }footer: {
-				//Text("For debugging only.")
+    ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
+            }
 			}
 			Section {
 				Button("Xoá bookassetd UUID") {
