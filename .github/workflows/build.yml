@@ -18,7 +18,7 @@ jobs:
           xcodebuild -scheme SparseBox -derivedDataPath build -destination 'generic/platform=iOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
           mkdir -p Payload packages
           cp -R build/Build/Products/Debug-iphoneos/SparseBox.app Payload/
-          zip -r packages/SparseBox.ipa Payload
+          zip -r packages/SaiGonToolkit.ipa Payload
           rm -rf Payload
 
       - name: Upload artifact
