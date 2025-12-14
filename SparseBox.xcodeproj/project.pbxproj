@@ -397,7 +397,7 @@
 					"$(PROJECT_DIR)/Sources/idevice",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kdt.SparseBox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoahuynh.SaiGonToolkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SparseBox-Bridging-Header.h";
@@ -436,7 +436,7 @@
 					"$(PROJECT_DIR)/Sources/idevice",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kdt.SparseBox;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoahuynh.SaiGonToolkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SparseBox-Bridging-Header.h";
