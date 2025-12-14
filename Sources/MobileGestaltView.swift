@@ -52,10 +52,10 @@ struct MobileGestaltView: View {
 
                 // Hiển thị Picker khi bật Dynamic Island
                 if bindingForIsland(
-                    key: "oPeik/9e8lQWMszEjbPzng",
-                    subkey: "ArtworkDeviceSubType",
-                    values: islandSubtypes,
-                    selectedIndex: $selectedSubtypeIndex
+                    "oPeik/9e8lQWMszEjbPzng",
+                    "ArtworkDeviceSubType",
+                    islandSubtypes,
+                    $selectedSubtypeIndex
                 ).wrappedValue {
                     Picker("ArtworkDeviceSubType", selection: $selectedSubtypeIndex) {
                         ForEach(0..<islandSubtypes.count, id: \.self) { i in
