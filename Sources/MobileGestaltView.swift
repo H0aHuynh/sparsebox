@@ -34,6 +34,21 @@ private let islandName = "iPhone Air"
 			} header: {
 				Text("Debug")
 			}
+			
+			Section {
+				Toggle("Dynamic Island", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex))
+     // Hiển thị Picker khi bật Dynamic Island
+     if bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex)
+						.wrappedValue {
+        Text(islandName)
+           .font(.headline)
+           .foregroundColor(.blue)
+											 .frame(maxWidth: .infinity, alignment: .center)
+      }
+    } footer: {
+        Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
+    }
+			
 			Section {
 				Toggle("Action Button", isOn: bindingForMGKeys(["cT44WE1EohiwRzhsZ8xEsw"]))
 					.disabled(Utils.requiresVersion(17))
@@ -49,26 +64,6 @@ private let islandName = "iPhone Air"
 				Toggle("Charge limit", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
 					.disabled(Utils.requiresVersion(17))
 				Toggle("Crash Detection (might not work)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
-				Section {
-				Toggle("Dynamic Island", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex
-                ))
-
-                // Hiển thị Picker khi bật Dynamic Island
-                if bindingForIsland(
-                    "oPeik/9e8lQWMszEjbPzng",
-                    "ArtworkDeviceSubType",
-                    islandSubtypes,
-                    $selectedSubtypeIndex
-                ).wrappedValue {
-    
-        Text(islandName)
-            .font(.headline)
-            .foregroundColor(.blue)
-    
-}
-} footer: {
-        Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
-    }
 				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
 				Toggle("Internal Storage info", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
 				Toggle("Internal stuff", isOn: bindingForInternalStuff())
