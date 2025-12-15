@@ -49,6 +49,7 @@ private let islandName = "iPhone Air"
 				Toggle("Charge limit", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
 					.disabled(Utils.requiresVersion(17))
 				Toggle("Crash Detection (might not work)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
+				Section {
 				Toggle("Dynamic Island", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex
                 ))
 
@@ -59,14 +60,15 @@ private let islandName = "iPhone Air"
                     islandSubtypes,
                     $selectedSubtypeIndex
                 ).wrappedValue {
-    Section {
+    
         Text(islandName)
             .font(.headline)
             .foregroundColor(.blue)
-    } footer: {
+    
+}
+} footer: {
         Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
     }
-}
 				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
 				Toggle("Internal Storage info", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
 				Toggle("Internal stuff", isOn: bindingForInternalStuff())
