@@ -45,7 +45,9 @@ private let islandName = "iPhone Air"
            .foregroundColor(.blue)
 											 .frame(maxWidth: .infinity, alignment: .center)
       }
-    } footer: {
+    } header: {
+				    Text("MobileGestalt")
+			} footer: {
         Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
     }
 			
@@ -75,7 +77,7 @@ private let islandName = "iPhone Air"
 					Toggle("Tap to Wake (iPhone SE)", isOn: bindingForMGKeys(["yZf3GTRMGTuwSV/lD7Cagw"]))
 				}
 			} header: {
-				Text("MobileGestalt")
+				//Text("MobileGestalt")
 			}
 			Section {
 				Picker("Mẫu thiết bị", selection: $productType) {
