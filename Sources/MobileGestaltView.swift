@@ -167,15 +167,15 @@ private let islandName = "iPhone Air"
 				}
 				.disabled(bookassetdUUID == nil)
 			} footer: {
-				//Text("For debugging only.")
+				Text(bookassetdUUID)
 			}
 		}
-		.alert("Error", isPresented: $showErrorAlert) {
+		.alert("Lỗi", isPresented: $showErrorAlert) {
 			Button("OK") {}
 		} message: {
 			Text(lastError ?? "???")
 		}
-		.alert("Instruction", isPresented: $showBookassetdUUIDGuideAlert) {
+		.alert("Chỉ dẫn", isPresented: $showBookassetdUUIDGuideAlert) {
 			Button("Hiểu rồi") {
 				LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: "com.apple.iBooks")
 			}
@@ -204,7 +204,7 @@ private let islandName = "iPhone Air"
 					Utils.bgTask = .invalid
 				})
 				if Utils.bgTask == .invalid {
-					print("Failed to start background task")
+					print("Không thể khởi động tác vụ nền.")
 					return
 				}
 			} else if scenePhase == .active {
@@ -471,8 +471,8 @@ private let islandName = "iPhone Air"
 		if bookassetdUUID == nil {
 			showBookassetdUUIDGuideAlert.toggle()
 
-			print("Finding bookassetd container UUID...")
-			print("Please open Books app and download a book to continue.")
+			print("Tìm UUID của container bookassetd...")
+			print("Vui lòng mở ứng dụng Sách và tải sách xuống để tiếp tục.")
 			line = try await waitForSyslogLine(matches: { $0.contains("bookassetd") && $0.contains("/Documents/BLDownloads/") })
 
 			// Return to SparseBox
@@ -482,7 +482,7 @@ private let islandName = "iPhone Air"
 				line.components(separatedBy: "/var/containers/Shared/SystemGroup/")[1]
 				.components(separatedBy: "/Documents/BLDownloads")[0]
 			if bookassetdUUID == nil {
-				lastError = "Failed to get bookassetd container UUID from syslog."
+				lastError = "Không thể lấy UUID của container bookassetd từ syslog."
 				showErrorAlert = true
 				return
 			}
@@ -516,7 +516,7 @@ private let islandName = "iPhone Air"
 			try? FileManager.default.copyItem(atPath: resourcePath, toPath: bldLocalPath + "-wal")
 		}
 
-		print("Patching BLDatabaseManager.sqlite...")
+		print("Vá BLDatabaseManager.sqlite...")
 		try Databases.patchDatabase(dbPath: d28LocalPath, uuid: bookassetdUUID!, ip: "localhost", port: Utils.port)
 
 		// Kill bookassetd and Books processes to stop them from updating BLDatabaseManager.sqlite
@@ -524,20 +524,20 @@ private let islandName = "iPhone Air"
 		var pid_bookassetd = processes.first { $0.value?.hasSuffix("/bookassetd") == true }?.key
 		var pid_Books = processes.first { $0.value?.hasSuffix("/Books") == true }?.key
 		if let pid_bookassetd {
-			print("Stopping bookassetd (pid \(pid_bookassetd))...")
+			print("Dừng bookassetd (pid \(pid_bookassetd))...")
 			try context?.killProcess(withPID: pid_bookassetd, signal: SIGSTOP)
 		}
 		if let pid_Books {
-			print("Killing Books (pid \(pid_Books))...")
+			print("Tắt Books (pid \(pid_Books))...")
 			try context?.killProcess(withPID: pid_Books, signal: SIGKILL)
 		}
 
 		// Upload com.apple.MobileGestalt.plist
-		print("Uploading com.apple.MobileGestalt.plist")
+		print("Đang tải lêng com.apple.MobileGestalt.plist")
 		try context?.afcPushFile(modMGURL.path(), toPath: "com.apple.MobileGestalt.plist")
 
 		// Upload downloads.28.sqlitedb
-		print("Uploading downloads.28.sqlitedb")
+		print("Đang tải lên downloads.28.sqlitedb")
 		try context?.afcPushFile(d28LocalPath, toPath: "Downloads/downloads.28.sqlitedb")
 		try context?.afcPushFile(d28LocalPath + "-shm", toPath: "Downloads/downloads.28.sqlitedb-shm")
 		try context?.afcPushFile(d28LocalPath + "-wal", toPath: "Downloads/downloads.28.sqlitedb-wal")
@@ -547,12 +547,12 @@ private let islandName = "iPhone Air"
 		processes = try getRunningProcesses()
 		let pid_itunesstored = processes.first { $0.value?.hasSuffix("/itunesstored") == true }?.key
 		if let pid_itunesstored {
-			print("Killing itunesstored (pid \(pid_itunesstored))...")
+			print("Tắt itunesstored (pid \(pid_itunesstored))...")
 			try context?.killProcess(withPID: pid_itunesstored, signal: SIGKILL)
 		}
 
 		// Wait for itunesstored to finish download and raise an error
-		print("Waiting for itunesstored to finish download...")
+		print("Đang chờ iTunesStored tải xuống xong....")
 		// FIXME: syslog not working
 		_ = try await waitForSyslogLine(matches: { $0.contains("Install complete for download: 6936249076851270152 result: Failed") }, timeout: 2)
 
@@ -560,11 +560,11 @@ private let islandName = "iPhone Air"
 		pid_bookassetd = processes.first { $0.value?.hasSuffix("/bookassetd") == true }?.key
 		pid_Books = processes.first { $0.value?.hasSuffix("/Books") == true }?.key
 		if let pid_bookassetd {
-			print("Killing bookassetd (pid \(pid_bookassetd))...")
+			print("Tắt bookassetd (pid \(pid_bookassetd))...")
 			try context?.killProcess(withPID: pid_bookassetd, signal: SIGKILL)
 		}
 		if let pid_Books {
-			print("Killing Books (pid \(pid_Books))...")
+			print("Tắt Books (pid \(pid_Books))...")
 			try context?.killProcess(withPID: pid_Books, signal: SIGKILL)
 		}
 
@@ -572,48 +572,19 @@ private let islandName = "iPhone Air"
 		LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: "com.apple.iBooks")
 		LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: Bundle.main.bundleIdentifier!)
 
-		print("Waiting for MobileGestalt overwrite to complete...")
+		print("Đang chờ quá trình ghi đè MobileGestalt hoàn tất...")
 		let success_message =
 			"/private/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist) [Install-Mgr]: Marking download as [finished]"
 		// FIXME: syslog not working
 		_ = try await waitForSyslogLine(matches: { $0.contains(success_message) }, timeout: 3)
 
 		if respring {
-			print("Respringing...")
+			print("Khởi động lại...")
 			let pid_backboardd = processes.first { $0.value?.hasSuffix("/backboardd") == true }?.key
 			if let pid_backboardd {
 				try context?.killProcess(withPID: pid_backboardd, signal: SIGKILL)
 			}
 		}
-
-		//        let deviceList = MobileDevice.deviceList()
-		//        guard deviceList.count == 1 else {
-		//            print("Invalid device count: \(deviceList.count)")
-		//            return
-		//        }
-		//        Utils.udid = deviceList.first!
-		//        D28BookChain.replaceMobileGestalt(udid: Utils.udid, path: "/aaaaa")
-
-		/*
-		MobileDevice.requireAppleFileConduitService(udid: Utils.udid) { client in
-		    var file: UInt64 = 0
-		    let ret = afc_file_open(client, "/Downloads/downloads.28.sqlitedb", AFC_FOPEN_RW, &file)
-		    guard ret == AFC_E_SUCCESS else {
-		        print("AFC open failed with code \(ret)")
-		        return
-		    }
-		
-		    let d28LocalPath = Bundle.main.url(forResource: "downloads", withExtension: "28.sqlitedb")!
-		    let d28Data = try! Data(contentsOf: d28LocalPath)
-		    d28Data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
-		        let writeRet = afc_file_write(client, file, ptr.baseAddress!, UInt32(d28Data.count), <#UnsafeMutablePointer<UInt32>?#>)
-		        guard writeRet == AFC_E_SUCCESS else {
-		            print("AFC write failed with code \(writeRet)")
-		            return
-		        }
-		    }
-		}
-		 */
 	}
 
 	func getRunningProcesses() throws -> [Int32: String?] {
