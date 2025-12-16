@@ -31,53 +31,49 @@ private let islandName = "iPhone Air"
 		Form {
 			Section {
 				Text("HTTP server port \(Utils.port)")
-			} header: {
-				Text("Debug")
 			}
 			
 			Section {
 				Toggle("Dynamic Island", isOn: bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex))
-     // Hiển thị Picker khi bật Dynamic Island
-     if bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex)
-						.wrappedValue {
-        Text(islandName)
-           .font(.headline)
-           .foregroundColor(.blue)
-											 .frame(maxWidth: .infinity, alignment: .center)
-      }
-    } header: {
-				    Text("MobileGestalt")
-			} footer: {
-        Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
-    }
+   				  // Hiển thị Picker khi bật Dynamic Island
+    			 if bindingForIsland("oPeik/9e8lQWMszEjbPzng", "ArtworkDeviceSubType", islandSubtypes, $selectedSubtypeIndex)
+					.wrappedValue {
+      					Text(islandName)
+          						.font(.headline)
+           						.foregroundColor(.blue)
+								.frame(maxWidth: .infinity, alignment: .center)
+      				}
+  			  } header: {
+				Text("MobileGestalt")
+			  } footer: {
+        		Text("Đang dùng kiểu iPhone Air, vị trí Dynamic Island thấp nhất, đẹp nhất, ít che notch, animation mượt.")
+    		  }
 			
 			Section {
 				Toggle("Action Button", isOn: bindingForMGKeys(["cT44WE1EohiwRzhsZ8xEsw"]))
 					.disabled(Utils.requiresVersion(17))
-				Toggle("Allow installing iPadOS apps", isOn: bindingForMGKeys(["9MZ5AdH43csAUajl/dU+IQ"], type: [Int].self, defaultValue: [1], enableValue: [1, 2]))
-				Toggle("Always on Display (18.0+)", isOn: bindingForMGKeys(["j8/Omm6s1lsmTDFsXjsBfA", "2OOJf1VhaM7NxfRok3HbWQ"]))
+				Toggle("Cho phép cài đặt ứng dụng iPadOS", isOn: bindingForMGKeys(["9MZ5AdH43csAUajl/dU+IQ"], type: [Int].self, defaultValue: [1], enableValue: [1, 2]))
+				Toggle("Always on Display", isOn: bindingForMGKeys(["j8/Omm6s1lsmTDFsXjsBfA", "2OOJf1VhaM7NxfRok3HbWQ"]))
 					.disabled(Utils.requiresVersion(18))
 				Toggle("Apple Intelligence", isOn: bindingForAppleIntelligence())
 					.disabled(Utils.requiresVersion(18))
-				Toggle("Apple Pencil", isOn: bindingForMGKeys(["yhHcB0iH0d1XzPO/CFd3ow"]))
-				Toggle("Boot chime", isOn: bindingForMGKeys(["QHxt+hGLaBPbQJbXiUJX3w"]))
+				Toggle("Bút Apple Pencil", isOn: bindingForMGKeys(["yhHcB0iH0d1XzPO/CFd3ow"]))
+				Toggle("Âm thanh khởi động", isOn: bindingForMGKeys(["QHxt+hGLaBPbQJbXiUJX3w"]))
 				Toggle("Camera button (18.0rc+)", isOn: bindingForMGKeys(["CwvKxM2cEogD3p+HYgaW0Q", "oOV1jhJbdV3AddkcCg0AEA"]))
 					.disabled(Utils.requiresVersion(18))
-				Toggle("Charge limit", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
+				Toggle("Giới hạn sạc", isOn: bindingForMGKeys(["37NVydb//GP/GrhuTN+exg"]))
 					.disabled(Utils.requiresVersion(17))
-				Toggle("Crash Detection (might not work)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
-				Toggle("Disable region restrictions", isOn: bindingForRegionRestriction())
-				Toggle("Internal Storage info", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
-				Toggle("Internal stuff", isOn: bindingForInternalStuff())
-				Toggle("Security Research Device", isOn: bindingForMGKeys(["XYlJKKkj2hztRP1NWWnhlw"]))
+				Toggle("Phát hiện va chạm (có thể không hiệu quả)", isOn: bindingForMGKeys(["HCzWusHQwZDea6nNhaKndw"]))
+				Toggle("Vô hiệu hóa các hạn chế theo khu vực", isOn: bindingForRegionRestriction())
+				Toggle("Thông tin bộ nhớ trong", isOn: bindingForMGKeys(["LBJfwOEzExRxzlAnSuI7eg"]))
+				Toggle("Nội bộ", isOn: bindingForInternalStuff())
+				Toggle("Thiết bị nghiên cứu bảo mật", isOn: bindingForMGKeys(["XYlJKKkj2hztRP1NWWnhlw"]))
 				Toggle("Metal HUD for all apps", isOn: bindingForMGKeys(["EqrsVvjcYDdxHBiQmGhAWw"]))
 				Toggle("Stage Manager", isOn: bindingForMGKeys(["qeaj75wk3HF4DwQ8qbIi7g"]))
 					.disabled(UIDevice.current.userInterfaceIdiom != .pad)
 				if UIDevice._hasHomeButton() {
 					Toggle("Tap to Wake (iPhone SE)", isOn: bindingForMGKeys(["yZf3GTRMGTuwSV/lD7Cagw"]))
 				}
-			} header: {
-				//Text("MobileGestalt")
 			}
 			Section {
 				Picker("Mẫu thiết bị", selection: $productType) {
@@ -98,12 +94,9 @@ private let islandName = "iPhone Air"
 			Section {
 				let cacheExtra = mobileGestalt["CacheExtra"] as? NSMutableDictionary
 				Toggle("iPadOS cho iPhone", isOn: bindingForTrollPad())
-					// validate DeviceClass
 					.disabled(cacheExtra?["+3Uf0Pm5F8Xy7Onyvko0vA"] as? String != "iPhone")
 			} footer: {
-				Text(
-					"Ghi đè thành ngữ giao diện người dùng cho iPadOS, để bạn có thể sử dụng tất cả các tính năng đa nhiệm của iPadOS trên iPhone. Cung cấp cho bạn các khả năng tương tự như TrollPad, nhưng có thể gây ra một số vấn đề.\nVUI LÒNG KHÔNG TẮT SHOW DOCK TRONG STAGE MANAGER NẾU KHÔNG ĐIỆN THOẠI CỦA BẠN SẼ BOOTLOOP KHI XOAY ĐẾN LANDSCAPE."
-				)
+				Text("Ghi đè thành ngữ giao diện người dùng cho iPadOS, để bạn có thể sử dụng tất cả các tính năng đa nhiệm của iPadOS trên iPhone. Cung cấp cho bạn các khả năng tương tự như TrollPad, nhưng có thể gây ra một số vấn đề.\nVUI LÒNG KHÔNG TẮT SHOW DOCK TRONG STAGE MANAGER NẾU KHÔNG ĐIỆN THOẠI CỦA BẠN SẼ BOOTLOOP KHI XOAY ĐẾN LANDSCAPE.")
 			}
 			Section {
 				Toggle("Respring Sau khi hoàn thành", isOn: $respring)
@@ -149,6 +142,7 @@ private let islandName = "iPhone Air"
 				}
 				.disabled(taskRunning)
 			}
+			
 			Section {
 				//ShareLink("Export Modified MobileGestalt", item: modMGURL)
 				Button("Xuất bản MobileGestalt đã sửa đổi", systemImage: "square.and.arrow.up") {
@@ -160,22 +154,24 @@ private let islandName = "iPhone Air"
 					}
 				}
 				ShareLink("Xuất bản gốc MobileGestalt", item: origMGURL)
-			}
+			}footer: {
+        		
+    		  }
 			Section {
 				Button("Xoá bookassetd UUID") {
 					bookassetdUUID = nil
 				}
 				.disabled(bookassetdUUID == nil)
 			} footer: {
-				//Text("For debugging only.")
+				Text(bookassetdUUID)
 			}
 		}
-		.alert("Error", isPresented: $showErrorAlert) {
+		.alert("Lỗi", isPresented: $showErrorAlert) {
 			Button("OK") {}
 		} message: {
 			Text(lastError ?? "???")
 		}
-		.alert("Instruction", isPresented: $showBookassetdUUIDGuideAlert) {
+		.alert("Chỉ dẫn", isPresented: $showBookassetdUUIDGuideAlert) {
 			Button("Hiểu rồi") {
 				LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: "com.apple.iBooks")
 			}
@@ -471,8 +467,8 @@ private let islandName = "iPhone Air"
 		if bookassetdUUID == nil {
 			showBookassetdUUIDGuideAlert.toggle()
 
-			print("Finding bookassetd container UUID...")
-			print("Please open Books app and download a book to continue.")
+			print("Tìm UUID của container bookassetd...")
+			print("Vui lòng mở ứng dụng Sách và tải xuống một cuốn sách để tiếp tục..")
 			line = try await waitForSyslogLine(matches: { $0.contains("bookassetd") && $0.contains("/Documents/BLDownloads/") })
 
 			// Return to SparseBox
@@ -482,7 +478,7 @@ private let islandName = "iPhone Air"
 				line.components(separatedBy: "/var/containers/Shared/SystemGroup/")[1]
 				.components(separatedBy: "/Documents/BLDownloads")[0]
 			if bookassetdUUID == nil {
-				lastError = "Failed to get bookassetd container UUID from syslog."
+				lastError = "Không thể lấy UUID của vùng chứa bookassetd từ syslog.."
 				showErrorAlert = true
 				return
 			}
@@ -516,7 +512,7 @@ private let islandName = "iPhone Air"
 			try? FileManager.default.copyItem(atPath: resourcePath, toPath: bldLocalPath + "-wal")
 		}
 
-		print("Patching BLDatabaseManager.sqlite...")
+		print("Vá BLDatabaseManager.sqlite...")
 		try Databases.patchDatabase(dbPath: d28LocalPath, uuid: bookassetdUUID!, ip: "localhost", port: Utils.port)
 
 		// Kill bookassetd and Books processes to stop them from updating BLDatabaseManager.sqlite
@@ -524,20 +520,20 @@ private let islandName = "iPhone Air"
 		var pid_bookassetd = processes.first { $0.value?.hasSuffix("/bookassetd") == true }?.key
 		var pid_Books = processes.first { $0.value?.hasSuffix("/Books") == true }?.key
 		if let pid_bookassetd {
-			print("Stopping bookassetd (pid \(pid_bookassetd))...")
+			print("Dừng lại bookassetd (pid \(pid_bookassetd))...")
 			try context?.killProcess(withPID: pid_bookassetd, signal: SIGSTOP)
 		}
 		if let pid_Books {
-			print("Killing Books (pid \(pid_Books))...")
+			print("Tắt Books (pid \(pid_Books))...")
 			try context?.killProcess(withPID: pid_Books, signal: SIGKILL)
 		}
 
 		// Upload com.apple.MobileGestalt.plist
-		print("Uploading com.apple.MobileGestalt.plist")
+		print("Đang tải lên com.apple.MobileGestalt.plist")
 		try context?.afcPushFile(modMGURL.path(), toPath: "com.apple.MobileGestalt.plist")
 
 		// Upload downloads.28.sqlitedb
-		print("Uploading downloads.28.sqlitedb")
+		print("Đang tải lên downloads.28.sqlitedb")
 		try context?.afcPushFile(d28LocalPath, toPath: "Downloads/downloads.28.sqlitedb")
 		try context?.afcPushFile(d28LocalPath + "-shm", toPath: "Downloads/downloads.28.sqlitedb-shm")
 		try context?.afcPushFile(d28LocalPath + "-wal", toPath: "Downloads/downloads.28.sqlitedb-wal")
@@ -547,12 +543,12 @@ private let islandName = "iPhone Air"
 		processes = try getRunningProcesses()
 		let pid_itunesstored = processes.first { $0.value?.hasSuffix("/itunesstored") == true }?.key
 		if let pid_itunesstored {
-			print("Killing itunesstored (pid \(pid_itunesstored))...")
+			print("Tắt itunesstored (pid \(pid_itunesstored))...")
 			try context?.killProcess(withPID: pid_itunesstored, signal: SIGKILL)
 		}
 
 		// Wait for itunesstored to finish download and raise an error
-		print("Waiting for itunesstored to finish download...")
+		print("Đang chờ iTunesStored tải xuống xong....")
 		// FIXME: syslog not working
 		_ = try await waitForSyslogLine(matches: { $0.contains("Install complete for download: 6936249076851270152 result: Failed") }, timeout: 2)
 
@@ -560,11 +556,11 @@ private let islandName = "iPhone Air"
 		pid_bookassetd = processes.first { $0.value?.hasSuffix("/bookassetd") == true }?.key
 		pid_Books = processes.first { $0.value?.hasSuffix("/Books") == true }?.key
 		if let pid_bookassetd {
-			print("Killing bookassetd (pid \(pid_bookassetd))...")
+			print("Tắt bookassetd (pid \(pid_bookassetd))...")
 			try context?.killProcess(withPID: pid_bookassetd, signal: SIGKILL)
 		}
 		if let pid_Books {
-			print("Killing Books (pid \(pid_Books))...")
+			print("Tắt Books (pid \(pid_Books))...")
 			try context?.killProcess(withPID: pid_Books, signal: SIGKILL)
 		}
 
@@ -572,9 +568,8 @@ private let islandName = "iPhone Air"
 		LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: "com.apple.iBooks")
 		LSApplicationWorkspaceDefaultWorkspace().openApplication(withBundleID: Bundle.main.bundleIdentifier!)
 
-		print("Waiting for MobileGestalt overwrite to complete...")
-		let success_message =
-			"/private/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist) [Install-Mgr]: Marking download as [finished]"
+		print("Đang chờ quá trình ghi đè MobileGestalt hoàn tất...")
+		let success_message = "/private/var/containers/Shared/SystemGroup/systemgroup.com.apple.mobilegestaltcache/Library/Caches/com.apple.MobileGestalt.plist) [Install-Mgr]: Marking download as [finished]"
 		// FIXME: syslog not working
 		_ = try await waitForSyslogLine(matches: { $0.contains(success_message) }, timeout: 3)
 
@@ -585,35 +580,6 @@ private let islandName = "iPhone Air"
 				try context?.killProcess(withPID: pid_backboardd, signal: SIGKILL)
 			}
 		}
-
-		//        let deviceList = MobileDevice.deviceList()
-		//        guard deviceList.count == 1 else {
-		//            print("Invalid device count: \(deviceList.count)")
-		//            return
-		//        }
-		//        Utils.udid = deviceList.first!
-		//        D28BookChain.replaceMobileGestalt(udid: Utils.udid, path: "/aaaaa")
-
-		/*
-		MobileDevice.requireAppleFileConduitService(udid: Utils.udid) { client in
-		    var file: UInt64 = 0
-		    let ret = afc_file_open(client, "/Downloads/downloads.28.sqlitedb", AFC_FOPEN_RW, &file)
-		    guard ret == AFC_E_SUCCESS else {
-		        print("AFC open failed with code \(ret)")
-		        return
-		    }
-		
-		    let d28LocalPath = Bundle.main.url(forResource: "downloads", withExtension: "28.sqlitedb")!
-		    let d28Data = try! Data(contentsOf: d28LocalPath)
-		    d28Data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
-		        let writeRet = afc_file_write(client, file, ptr.baseAddress!, UInt32(d28Data.count), <#UnsafeMutablePointer<UInt32>?#>)
-		        guard writeRet == AFC_E_SUCCESS else {
-		            print("AFC write failed with code \(writeRet)")
-		            return
-		        }
-		    }
-		}
-		 */
 	}
 
 	func getRunningProcesses() throws -> [Int32: String?] {
