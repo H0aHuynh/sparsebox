@@ -18,8 +18,7 @@ class Databases {
         }
         defer { sqlite3_close(db) }
         
-        let bldbLocalPrefix =
-        "/private/var/containers/Shared/SystemGroup/\(uuid)/Documents/BLDatabaseManager/BLDatabaseManager.sqlite"
+        let bldbLocalPrefix = "/private/var/containers/Shared/SystemGroup/\(uuid)/Documents/BLDatabaseManager/BLDatabaseManager.sqlite"
         let sql1 = """
         UPDATE asset
         SET local_path = CASE
@@ -61,8 +60,7 @@ class Databases {
         if result != SQLITE_OK {
             let message = errMsg.flatMap { String(cString: $0) } ?? "Unknown SQL error"
             sqlite3_free(errMsg)
-            throw NSError(domain: "SQLite", code: Int(result),
-                          userInfo: [NSLocalizedDescriptionKey: message])
+            throw NSError(domain: "SQLite", code: Int(result), userInfo: [NSLocalizedDescriptionKey: message])
         }
         return result
     }
