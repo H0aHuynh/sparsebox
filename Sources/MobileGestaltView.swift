@@ -30,8 +30,8 @@ private let islandName = "iPhone Air"
 	var body: some View {
 		Form {
 			Section {
-				Text("Port \(Utils.port)")
-				Text("Book UUID:\(bookassetdUUID!)")
+				Text("Port: \(Utils.port)")
+				Text("Book UUID: \(bookassetdUUID!)")
 			} header: {
 				Text("Thông tin")
 			}
