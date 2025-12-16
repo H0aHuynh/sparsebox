@@ -1,7 +1,5 @@
 import SwiftUI
 import UniformTypeIdentifiers
-import Foundation
-
 
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -15,7 +13,6 @@ struct ContentView: View {
     @State var initError: String?
     @State var lastError: String?
     @State var path = NavigationPath()
-    let modelName = UIDevice.modelName
     var body: some View {
         NavigationStack(path: $path) {
             Form {
