@@ -30,9 +30,10 @@ private let islandName = "iPhone Air"
 	var body: some View {
 		Form {
 			Section {
-				Text("HTTP server port \(Utils.port)")
+				Text("Port \(Utils.port)")
+				Text("Book UUID:\(bookassetdUUID!)")
 			} header: {
-				//Text("Debug")
+				Text("Thông tin")
 			}
 			
 			Section {
@@ -166,7 +167,7 @@ private let islandName = "iPhone Air"
 				}
 				.disabled(bookassetdUUID == nil)
 			} footer: {
-				Text("\(bookassetdUUID!)")
+				//Text("\(bookassetdUUID!)")
 			}
 		}
 		.alert("Lỗi", isPresented: $showErrorAlert) {
