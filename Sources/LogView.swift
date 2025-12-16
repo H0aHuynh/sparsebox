@@ -44,7 +44,7 @@ struct LogView: View {
                 }
             }
         }
-        .navigationTitle("Nhật ký")
+        .navigationTitle("Log output")
     }
     
     init() {
