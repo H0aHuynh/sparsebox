@@ -32,6 +32,7 @@ private let islandName = "iPhone Air"
 			Section {
 				Text("Port: \(Utils.port)")
 				Text("Book UUID: \(bookassetdUUID!)")
+				    .font(.system(size: 12))
 			} header: {
 				Text("Thông tin")
 			}
