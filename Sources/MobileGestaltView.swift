@@ -1,6 +1,22 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+func getBuildNumber() -> String? {
+    var size: size_t = 0
+    let ctlKey = "kern.osversion"
+    
+    if sysctlbyname(ctlKey, nil, &size, nil, 0) == -1 {
+        return nil
+    }
+    
+    var machine = [CChar](repeating: 0, count: Int(size))
+    if sysctlbyname(ctlKey, &machine, &size, nil, 0) == -1 {
+        return nil
+    }
+    
+    return String(cString: machine)
+}
+
 struct MobileGestaltView: View {
 	let origMGURL, modMGURL, featFlagsURL: URL
 	@AppStorage("BookassetdContainerUUID") private var bookassetdUUID: String?
@@ -18,7 +34,7 @@ struct MobileGestaltView: View {
 	@State var lastError: String?
 
 	@State var showBookassetdUUIDGuideAlert = false
-	
+	let modelName = UIDevice.modelName
 	// Thêm State cho Dynamic Island Picker
 	@State private var selectedSubtypeIndex = 0
 
@@ -30,6 +46,8 @@ private let islandName = "iPhone Air"
 	var body: some View {
 		Form {
 			Section {
+				Text("Thiết bị: \(modelName)")
+				Text("Phiên bản iOS: \(UIDevice.current.systemVersion) (\(getBuildNumber()))")
 				Text("Port: \(Utils.port)")
 				Text("Book UUID: \(bookassetdUUID!)")
 				    .font(.system(size: 12))
