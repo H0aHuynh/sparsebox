@@ -11,30 +11,30 @@ struct AppItemView: View {
                         let v = appDetails[k] as? String
                         VStack(alignment: .leading) {
                             Text(k)
-                            Text(v ?? "(not a String)")
+                            Text(v ?? "(không phải là String)")
                                 .font(Font.footnote)
                                 .textSelection(.enabled)
                         }
                     }
                 }
             } label: {
-                Text("View app details")
+                Text("Xem chi tiết ứng dụng")
             }
             Section {
                 if let bundlePath = appDetails["Path"] {
-                    Button("Copy app bundle folder") {
+                    Button("Sao chép thư mục gói ứng dụng") {
                         UIPasteboard.general.string = "file://a\(bundlePath)"
                     }
                 }
                 if let containerPath = appDetails["Container"] {
-                    Button("Copy app data folder") {
+                    Button("Sao chép thư mục dữ liệu ứng dụng") {
                         UIPasteboard.general.string = "file://a\(containerPath)"
                     }
                 }
             } header: {
-                Text("Arbitrary read exploit")
+                Text("Khai thác đọc tùy ý")
             } footer: {
-                Text("After copying path, open Settings, paste it in search bar, select all again and tap Share.\n\nOnly supported on iOS ≤ 18.2b1 and iOS 26.x. For this exploit, folders can only be shared via AirDrop.\nIf you're sharing App Store apps, please note that it will still remain encrypted.")
+                Text("Sau khi sao chép đường dẫn, mở Cài đặt, dán vào thanh tìm kiếm, chọn tất cả một lần nữa và nhấn Chia sẻ.\n\nChỉ hỗ trợ trên iOS ≤ 18.2b1 và iOS 26.x. Với lỗ hổng này, thư mục chỉ có thể được chia sẻ qua AirDrop.\nNếu bạn đang chia sẻ ứng dụng từ App Store, xin lưu ý rằng ứng dụng vẫn sẽ được mã hóa.")
             }
         }
         .navigationTitle((appDetails["CFBundleName"] as? String) ?? bundleID)
@@ -42,7 +42,7 @@ struct AppItemView: View {
 
     init(bundleID: String) {
         self.bundleID = bundleID
-        self.appDetails = ["Loading": AnyCodable("...")]
+        self.appDetails = ["Đang tải": AnyCodable("...")]
     }
 
     init(appDetails: [String: Any]) {
@@ -115,16 +115,16 @@ struct AppListView: View {
                 do {
                     apps = try JITEnableContext.shared.getAllAppsInfo() as! [String : [String : Any]]
                 } catch {
-                    apps = ["Failed to get app list: \(error)": [:]]
+                    apps = ["Không thể lấy danh sách ứng dụng: \(error)": [:]]
                 }
             }
         }
         .searchable(text: $searchString)
-        .navigationTitle("App list")
+        .navigationTitle("Danh sách ứng dụng")
     }
     
     init() {
-        apps = ["Loading": [:]]
+        apps = ["Đang tải": [:]]
     }
 
 }
