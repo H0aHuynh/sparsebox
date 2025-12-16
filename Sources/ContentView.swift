@@ -177,14 +177,14 @@ struct ContentView: View {
             Form {
                 Section {
                     HStack {
-                        Text("Trạng thái Heartbeat:")
+                        Text("Trậng thái Heartbeat")
                         Spacer()
                         Text(heartbeatReady ? AttributedString("Đang chạy", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("Chưa bắt đầu", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
                     HStack {
-                        Text("Nhà phát triển:")
+                        Text("Nhà phát triển")
                         Spacer()
-                        Text(ddiMounted ? AttributedString("Đã có", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("Chưa có", attributes: .init([.foregroundColor: UIColor.systemRed])))
+                        Text(ddiMounted ? AttributedString("đã có", attributes: .init([.foregroundColor: UIColor.systemGreen])) : AttributedString("chưa có", attributes: .init([.foregroundColor: UIColor.systemRed])))
                     }
                     Button(pairingFile == nil ? "Chọn tệp ghép nối" : "Đặt lại tệp ghép nối") {
                         if pairingFile == nil {
@@ -208,7 +208,7 @@ struct ContentView: View {
                     }
                 } footer: {
                     if pairingFile == nil {
-                        Text("Chọn tệp ghép nối để tiếp tục.")
+                        Text("Chọn hoặc kéo và thả tệp ghép nối để tiếp tục. Thêm thông tin: https://docs.sidestore.io/docs/getting-started/pairing-file")
                     } else if !heartbeatReady {
                         Text("Đang bắt đầu Heartbeat")
                     } else if !ddiMounted {
@@ -235,7 +235,9 @@ struct ContentView: View {
                         AppListView()
                     }
                     .disabled(!ddiMounted)
-                } 
+                } header: {
+                    //Text("Utilities")
+                }
                 Section {
                     NavigationLink("Tuỳ chỉnh MobileGestalt") {
                         MobileGestaltView()
@@ -247,7 +249,9 @@ struct ContentView: View {
                         testBypassAppLimit()
                     }
                     .disabled(tempUnavailable || Restore.supportedExploitLevel() != .dotAndSlashes || !heartbeatReady || taskRunning)
-                } footer: {
+                } header: {
+                    //Text("BookRestore exploit")
+                }footer: {
                     Text(
                         "Ẩn các ứng dụng dành cho nhà phát triển miễn phí khỏi cài đặt, để bạn có thể cài đặt nhiều hơn 3 ứng dụng. Bạn cần áp dụng điều này cho mỗi 3 ứng dụng bạn cài đặt hoặc cập nhật." +
                         "\nTính năng này hiện không khả dụng khi sử dụng thư viện idevice." +
@@ -255,6 +259,39 @@ struct ContentView: View {
                     )
                 }
 
+
+                
+                /*Section {
+                    let tempUnavailable = true
+                    Button("Bỏ qua giới hạn 3 ứng dụng (sắp có)") {
+                        testBypassAppLimit()
+                    }
+                    .disabled(tempUnavailable || Restore.supportedExploitLevel() != .dotAndSlashes || !heartbeatReady || taskRunning)
+                } header: {
+                    Text("SparseRestore exploit")
+                } footer: {
+                    Text(
+                        "Hide free developer apps from installd, so you could install more than 3 apps. You need to apply this for each 3 apps you install or update." +
+                        "\nThis feature is currently unavailable when using idevice library." +
+                        (Restore.supportedExploitLevel() == .dotAndSlashes ? "" : "\nYour iOS version (\(UIDevice.current.systemVersion)) does not support SparseRestore.")
+                    )
+                }*/
+                /*Section {
+                } footer: {
+                    VStack {
+                        /*Text("""
+A terrible app by @khanhduytran0. Use it at your own risk.
+Thanks to:
+@SideStore team: idevice, C bindings from StikDebug
+@JJTech0130: SparseRestore and backup exploit
+@hanakim3945: bl_sbx exploit files and writeup
+@PoomSmart: MobileGestalt dump
+@Lakr233: BBackupp
+@libimobiledevice
+""")*/
+                    }
+                }*/
+            }
             .fileImporter(isPresented: $showPairingFileImporter, allowedContentTypes: [UTType(filenameExtension: "mobiledevicepairing", conformingTo: .data)!], onCompletion: { result in
                 switch result {
                 case .success(let url):
@@ -275,7 +312,7 @@ struct ContentView: View {
                 if view == "Apply3AppLimitBypass" {
                     Text("TODO")
                 } else {
-                    Text("Quan điểm không xác định: \(view)")
+                    Text("Unknown view: \(view)")
                 }
             }
             .navigationTitle("SaiGon Toolkit")
@@ -328,7 +365,7 @@ struct ContentView: View {
 
     func testBypassAppLimit() {
         guard Restore.supportedExploitLevel() == .dotAndSlashes else {
-            lastError = "Phiên bản iOS không được hỗ trợ. Phải đang sử dụng iOS 18.1b4 trở xuống."
+            lastError = "Unsupported iOS version. Must be running iOS 18.1b4 or older."
             showErrorAlert.toggle()
             return
         }
@@ -346,7 +383,7 @@ struct ContentView: View {
         }
         //let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].absoluteString
         DispatchQueue.global(qos: .background).async {
-            print("Heartbeat: bắt đầu...")
+            print("Heartbeat: starting...")
             let completionHandler: @convention(block) (Int32, String?) -> Void = { result, message in
                 if result == 0 {
                     heartbeatReady = true
@@ -378,10 +415,10 @@ struct ContentView: View {
                                 print("Error removing invalid pairing file: \(error)")
                             }
                             
-                            lastError = "Tệp ghép nối không hợp lệ hoặc đã hết hạn. Vui lòng chọn tệp ghép nối mới."
+                            lastError = "The pairing file is invalid or expired. Please select a new pairing file."
                             showErrorAlert.toggle()
                         } else {
-                            lastError = "Không thể kết nối với Heartbeat (\(result)). Bạn có đang kết nối với WiFi hay Chế độ máy bay đã được bật chưa? Dữ liệu di động không được hỗ trợ. Vui lòng mở ứng dụng ít nhất một lần khi đã bật WiFi. Sau đó, bạn có thể chuyển sang dữ liệu di động để bật VPN, và khi VPN được kích hoạt, bạn có thể sử dụng Chế độ máy bay."
+                            lastError = "Failed to connect to Heartbeat (\(result)). Are you connected to WiFi or is Airplane Mode enabled? Cellular data isn’t supported. Please launch the app at least once with WiFi enabled. After that, you can switch to cellular data to turn on the VPN, and once the VPN is active you can use Airplane Mode."
                             showErrorAlert.toggle()
                         }
                     }
@@ -392,7 +429,7 @@ struct ContentView: View {
     }
     
     func performApply3AppLimitBypass() {
-        lastError = "Chức năng bỏ qua giới hạn 3 ứng dụng hiện đang tạm thời bị vô hiệu hóa."
+        lastError = "3 app limit bypass is temporarily disabled."
         showErrorAlert.toggle()
         /*
         let deviceList = MobileDevice.deviceList()
