@@ -93,6 +93,8 @@ struct ContentView: View {
                         testBypassAppLimit()
                     }
                     .disabled(tempUnavailable || Restore.supportedExploitLevel() != .dotAndSlashes || !heartbeatReady || taskRunning)
+                } header: {
+                    //Text("BookRestore exploit")
                 } footer: {
                     Text(
                         "Ẩn các ứng dụng dành cho nhà phát triển miễn phí khỏi cài đặt, để bạn có thể cài đặt nhiều hơn 3 ứng dụng. Bạn cần áp dụng điều này cho mỗi 3 ứng dụng bạn cài đặt hoặc cập nhật." +
