@@ -46,11 +46,9 @@ private let islandName = "iPhone Air"
 	var body: some View {
 		Form {
 			Section {
-				Text("Thiết bị: \(modelName)")
-				Text("Phiên bản iOS: \(UIDevice.current.systemVersion) (\(getBuildNumber()))")
-				Text("Port: \(Utils.port)")
+				Text("Thiết bị: \(modelName)\nPhiên bản iOS: \(UIDevice.current.systemVersion) (\(getBuildNumber() ?? "Không xác định"))\nPort: \(Utils.port)")
 				Text("Book UUID: \(bookassetdUUID!)")
-				    .font(.system(size: 12))
+				    .font(.system(size: 11))
 			} header: {
 				Text("Thông tin")
 			}
